@@ -1,6 +1,6 @@
 # ExcelProcessor
 
-Wrapper over OpenXML for ease of use. Offers the functionality to read and generate Excel files
+Wrapper over OpenXML for ease of use. No paid license required. Offers the functionality to read and generate Excel files
 
 ## Positioning abstractions
 Position and movement through Excel is done through two abstractions:
