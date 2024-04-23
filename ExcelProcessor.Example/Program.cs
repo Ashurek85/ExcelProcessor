@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
-using ExcelProcessor.Abstractions.Generator;
+﻿using ExcelProcessor.Abstractions.Generator;
 using ExcelProcessor.Abstractions.Generator.Engines;
 using ExcelProcessor.Abstractions.Generator.Sheets.Definitions;
 using ExcelProcessor.Core.Generator;
@@ -23,7 +22,7 @@ namespace ExcelProcessor.Example
         {
             Console.WriteLine("WriterExample...");
 
-            using (IExcelWriterEngine writerEngine = excelGenerator.FromTemplate<ExampleExcelStyles>("Resources\\WriterTemplateExample.xlsx"))
+            using (IExcelWriterEngine writerEngine = excelGenerator.WriteFromTemplate<ExampleExcelStyles>("Resources\\WriterTemplateExample.xlsx"))
             {
                 // Get Excel byte-array
                 byte[] excelBytes = writerEngine.Create(new IExcelSheetBuilder<WriterDataContext>[]

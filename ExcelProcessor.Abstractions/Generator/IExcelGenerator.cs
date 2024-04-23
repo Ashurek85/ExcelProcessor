@@ -10,7 +10,7 @@ namespace ExcelProcessor.Abstractions.Generator
         /// <typeparam name="ExcelStyles">Type of <see cref="IExcelStyles"/> </typeparam>
         /// <param name="templateFilePath">Path to template file</param>
         /// <returns>Instance of <see cref="IExcelWriterEngine"/></returns>
-        IExcelWriterEngine FromTemplate<ExcelStyles>(string templateFilePath)
+        IExcelWriterEngine WriteFromTemplate<ExcelStyles>(string templateFilePath)
             where ExcelStyles : IExcelStyles, new();
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace ExcelProcessor.Abstractions.Generator
         /// </summary>
         /// <typeparam name="ExcelStyles">Type of <see cref="IExcelStyles"/></typeparam>
         /// <returns>Instance of <see cref="IExcelWriterEngine"/></returns>
-        IExcelWriterEngine FromEmptyFile<ExcelStyles>()
+        IExcelWriterEngine WriteFromEmptyFile<ExcelStyles>()
             where ExcelStyles : IExcelStyles, new();
 
         /// <summary>
@@ -27,9 +27,11 @@ namespace ExcelProcessor.Abstractions.Generator
         /// <typeparam name="ExcelStyles">Type of <see cref="IExcelStyles"/></typeparam>
         /// <param name="data">Byte array</param>
         /// <returns>Instance of <see cref="IExcelWriterEngine"/></returns>
-        IExcelWriterEngine FromByteArray<ExcelStyles>(byte[] data)
+        IExcelWriterEngine WriteFromByteArray<ExcelStyles>(byte[] data)
             where ExcelStyles : IExcelStyles, new();
 
-        IExcelReaderEngine FromByteArray(byte[] data);
+        IExcelReaderEngine ReadFromByteArray(byte[] data);
+
+        IExcelReaderEngine ReadFromFile(string filePath);
     }
 }
