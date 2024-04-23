@@ -28,7 +28,7 @@ namespace ExcelProcessor.Example
                 // Get Excel byte-array
                 byte[] excelBytes = writerEngine.Create(new IExcelSheetBuilder<WriterDataContext>[]
                 {
-                    new ExcelSheetBuilderExample1()
+                    new ExcelSheetBuilderExample()
                 },
                 CreateDataContext());
 
