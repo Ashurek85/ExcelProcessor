@@ -14,9 +14,11 @@ namespace ExcelProcessor.Core.Generator.Sheets.Operations
 {
     public class ExcelSheetWriter : ExcelSheetBase, IExcelSheetWriter
     {
+        protected readonly IExcelStyles styles;
         public ExcelSheetWriter(WorksheetPart worksheetPart, IExcelStyles styles = null)
-            : base(worksheetPart, styles)
+            : base(worksheetPart)
         {            
+            this.styles = styles;
         }
 
         #region Insert Value

@@ -38,7 +38,7 @@ namespace ExcelProcessor.Core.Generator.ReaderResults
             });
         }
 
-        public void AddLineError(string error, int numLine)
+        public void AddRowError(string error, int numLine)
         {
             errors.Add(new ExcelReaderError()
             {
@@ -47,13 +47,5 @@ namespace ExcelProcessor.Core.Generator.ReaderResults
             });
         }
 
-        public void Accumulate(IExcelReaderResult<TEntityReaded> otherResults)
-        {
-            if (otherResults != null)
-            {
-                EntityReaded = otherResults.EntityReaded;
-                errors.AddRange(otherResults.Errors);
-            }
-        }
     }
 }

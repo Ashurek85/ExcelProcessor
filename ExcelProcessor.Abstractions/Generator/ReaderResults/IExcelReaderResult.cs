@@ -13,8 +13,6 @@ namespace ExcelProcessor.Abstractions.Generator.ReaderResults
 
         void AddCellError(string error, ICellReference cellRef);
 
-        void AddLineError(string error, int numLine);
-
-        void Accumulate(IExcelReaderResult<TEntityReaded> otherResults);
+        void AddRowError(string error, int numLine);
     }
 }

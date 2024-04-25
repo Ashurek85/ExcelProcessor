@@ -4,13 +4,13 @@ using ExcelProcessor.Abstractions.Generator.Sheets.Operations;
 namespace ExcelProcessor.Abstractions.Generator.Sheets.Definitions
 {
     public interface IExcelSheetParser<TEntityReaded>
-        where TEntityReaded : class
+        where TEntityReaded : class, new()
     {
         /// <summary>
         /// Sheet name in Excel file
         /// </summary>
         string SheetName { get; }
 
-        IExcelReaderResult<TEntityReaded> Parse(IExcelSheetReader sheet);
+        void Parse(IExcelSheetReader<TEntityReaded> sheet);
     }
 }

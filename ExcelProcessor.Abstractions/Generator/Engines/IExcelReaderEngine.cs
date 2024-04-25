@@ -8,7 +8,7 @@ namespace ExcelProcessor.Abstractions.Generator.Engines
     /// </summary>
     public interface IExcelReaderEngine : IDisposable
     {
-        IExcelReaderResult<TEntityReaded> ReadFile<TEntityReaded>(IExcelSheetParser<TEntityReaded> sheetParser)
-            where TEntityReaded : class;
+        IExcelReaderResult<TEntityReaded> ReadFile<TEntityReaded>(IExcelSheetParser<TEntityReaded>[] sheetParsers)
+            where TEntityReaded : class, new();
     }
 }
