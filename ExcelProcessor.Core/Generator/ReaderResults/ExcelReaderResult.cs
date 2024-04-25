@@ -32,7 +32,7 @@ namespace ExcelProcessor.Core.Generator.ReaderResults
         {
             errors.Add(new ExcelReaderError()
             {
-                LineNumError = cellRef.Row,
+                RowNumError = cellRef.Row,
                 ErrorDescription = error,
                 Cell = cellRef?.ToExcelString()
             });
@@ -42,7 +42,7 @@ namespace ExcelProcessor.Core.Generator.ReaderResults
         {
             errors.Add(new ExcelReaderError()
             {
-                LineNumError = numLine,
+                RowNumError = numLine,
                 ErrorDescription = error,
             });
         }

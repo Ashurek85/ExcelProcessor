@@ -1,5 +1,4 @@
-﻿using ExcelProcessor.Abstractions.Generator.ReaderResults;
-using ExcelProcessor.Abstractions.Generator.Sheets.Operations;
+﻿using ExcelProcessor.Abstractions.Generator.Sheets.Operations;
 
 namespace ExcelProcessor.Abstractions.Generator.Sheets.Definitions
 {
@@ -11,6 +10,10 @@ namespace ExcelProcessor.Abstractions.Generator.Sheets.Definitions
         /// </summary>
         string SheetName { get; }
 
+        /// <summary>
+        /// Parse Excel sheet
+        /// </summary>
+        /// <param name="sheet"><see cref="IExcelSheetReader{TEntityReaded}"/> instance</param>
         void Parse(IExcelSheetReader<TEntityReaded> sheet);
     }
 }

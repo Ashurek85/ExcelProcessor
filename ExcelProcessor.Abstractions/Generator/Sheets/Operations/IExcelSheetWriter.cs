@@ -1,6 +1,4 @@
-﻿using ExcelProcessor.Abstractions.Pointers;
-
-namespace ExcelProcessor.Abstractions.Generator.Sheets.Operations
+﻿namespace ExcelProcessor.Abstractions.Generator.Sheets.Operations
 {
     public interface IExcelSheetWriter : IExcelSheet
     {
