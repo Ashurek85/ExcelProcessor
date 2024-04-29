@@ -21,23 +21,42 @@ namespace ExcelProcessor.Examples.Reader
                         new ExcelSheetParserExample()
                     });
 
-                Assert.NotNull(result);
-
-                // Without errors
-                Assert.Empty(result.Errors);
-
-                // Data is ok
-                Assert.NotNull(result.EntityReaded);
-                Assert.Equal("MIT", result.EntityReaded.University);
-                Assert.Equal(new DateTime(2024, 04, 25, 11, 5, 14, DateTimeKind.Utc), result.EntityReaded.GeneratedAt);
-                Assert.Equal(6, result.EntityReaded.Students.Count);
-                ValidateStudent(result.EntityReaded.Students.ElementAt(0), "Sebastian", "Gil", 22);
-                ValidateStudent(result.EntityReaded.Students.ElementAt(1), "Pedro Jose", "Castro", 25);
-                ValidateStudent(result.EntityReaded.Students.ElementAt(2), "Inmaculada", "Amat", 21);
-                ValidateStudent(result.EntityReaded.Students.ElementAt(3), "Margarita", "Palma", 33);
-                ValidateStudent(result.EntityReaded.Students.ElementAt(4), "Isidoro", "Lobo", 34);
-                ValidateStudent(result.EntityReaded.Students.ElementAt(5), "Marcela", "Prado", 29);
+                ValidateOk(result);
             }
+        }
+
+        [Fact]
+        public void ReadOkInParallelTest()
+        {
+            IExcelGenerator excelGenerator = new ExcelGenerator();
+            using (IExcelReaderEngine readerEngine = excelGenerator.ReadFromFile("Resources\\ReaderExampleOk.xlsx"))
+            {
+                IExcelReaderResult<StudentContext> result = readerEngine.ReadFile(new IExcelSheetParser<StudentContext>[]
+                    {
+                        new ExcelSheetParallelParserExample()
+                    });
+                ValidateOk(result);
+            }
+        }
+
+        private void ValidateOk(IExcelReaderResult<StudentContext> result)
+        {
+            Assert.NotNull(result);
+
+            // Without errors
+            Assert.Empty(result.Errors);
+
+            // Data is ok
+            Assert.NotNull(result.EntityReaded);
+            Assert.Equal("MIT", result.EntityReaded.University);
+            Assert.Equal(new DateTime(2024, 04, 25, 11, 5, 14, DateTimeKind.Utc), result.EntityReaded.GeneratedAt);
+            Assert.Equal(6, result.EntityReaded.Students.Count);
+            ValidateStudent(result.EntityReaded.Students.ElementAt(0), "Sebastian", "Gil", 22);
+            ValidateStudent(result.EntityReaded.Students.ElementAt(1), "Pedro Jose", "Castro", 25);
+            ValidateStudent(result.EntityReaded.Students.ElementAt(2), "Inmaculada", "Amat", 21);
+            ValidateStudent(result.EntityReaded.Students.ElementAt(3), "Margarita", "Palma", 33);
+            ValidateStudent(result.EntityReaded.Students.ElementAt(4), "Isidoro", "Lobo", 34);
+            ValidateStudent(result.EntityReaded.Students.ElementAt(5), "Marcela", "Prado", 29);
         }
 
         [Fact]

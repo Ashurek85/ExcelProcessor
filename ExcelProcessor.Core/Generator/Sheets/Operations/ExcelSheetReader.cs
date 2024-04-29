@@ -6,6 +6,7 @@ using ExcelProcessor.Abstractions.Generator.Sheets.Operations;
 using ExcelProcessor.Abstractions.Pointers;
 using ExcelProcessor.Core.Exceptions;
 using ExcelProcessor.Core.Pointers;
+using System.Collections.Concurrent;
 using System.Globalization;
 
 namespace ExcelProcessor.Core.Generator.Sheets.Operations
@@ -125,12 +126,13 @@ namespace ExcelProcessor.Core.Generator.Sheets.Operations
                 return null;
         }        
 
-        public void ProcessAllValuesInParallel(int startsAtRow, int columnCount, Action<string[], uint> processAction)
+        public IEnumerable<TParallelReaded> ReadInParallel<TParallelReaded>(int startsAtRow, int columnCount, Func<string[], uint, TParallelReaded> processAction)
         {
             SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
             var sharedStringTable = workbookPart.GetPartsOfType<SharedStringTablePart>().First().SharedStringTable;
 
             var rows = sheetData.Elements<Row>().AsEnumerable().Where(r => r.RowIndex >= startsAtRow);
+            ConcurrentDictionary<uint, TParallelReaded> results = new ConcurrentDictionary<uint, TParallelReaded>();
             Parallel.ForEach(rows, row =>
             {
                 if (row.RowIndex != null)
@@ -170,9 +172,11 @@ namespace ExcelProcessor.Core.Generator.Sheets.Operations
                         cellRef = cellRef.NextColumn();
                     }
                     if (hasData)
-                        processAction(rowData, row.RowIndex);
+                        results.TryAdd(row.RowIndex, processAction(rowData, row.RowIndex));
                 }
             });
+            // Sorted as expected
+            return results.OrderBy(r => r.Key).Select(r => r.Value);
         }
 
     }

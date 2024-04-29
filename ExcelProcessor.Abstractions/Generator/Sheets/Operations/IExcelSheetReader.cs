@@ -40,9 +40,11 @@ namespace ExcelProcessor.Abstractions.Generator.Sheets.Operations
         /// <summary>
         /// Parallel reading of a block of content. Improve performance
         /// </summary>
+        /// <typeparam name="TParallelReaded">Type of internal entity readed</typeparam>
         /// <param name="startsAtRow"></param>
         /// <param name="columnCount"></param>
         /// <param name="processAction"></param>
-        void ProcessAllValuesInParallel(int startsAtRow, int columnCount, Action<string[], uint> processAction);
+        /// <returns></returns>
+        IEnumerable<TParallelReaded> ReadInParallel<TParallelReaded>(int startsAtRow, int columnCount, Func<string[], uint, TParallelReaded> processAction);
     }
 }
