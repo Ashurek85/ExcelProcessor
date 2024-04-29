@@ -28,7 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\ReaderExample.xlsx">
+    <None Update="Resources\ReaderExampleErrors.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\ReaderExampleOk.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
