@@ -33,7 +33,7 @@ Steps:
    - User cursor to move to another position: NextColumn or NextRowFromOrigin
    - Continue with perform operations on cell
   
-For more information see the example (complete in the source code)
+For more information see the complete example: project ExcelProcessor.Examples.Writer
 ```C#
 IExcelGenerator excelGenerator = new ExcelGenerator();
 using (IExcelWriterEngine writerEngine = excelGenerator.FromTemplate<ExampleExcelStyles>("Resources\\WriterTemplateExample.xlsx"))
