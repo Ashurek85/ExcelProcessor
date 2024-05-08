@@ -211,7 +211,8 @@ public void Parse(IExcelSheetReader<StudentContext> sheet)
 ```
 
 ### Read as parallel
-With the IExcelSheetReader<TEntityReaded>.ReadInParallel method you can perform a block reading line by line in parallel
+With the IExcelSheetReader<TEntityReaded>.ReadInParallel method you can perform a block reading line by line in parallel. 
+Allows better performance in iterative reading of rows.
 It has 3 parameters:
 - StartsAtRow: Row number where to start reading
 - ColumnCount: Number of columns to read
