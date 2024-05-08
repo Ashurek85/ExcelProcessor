@@ -113,8 +113,102 @@ private void InsertDataContextValues(IExcelSheetWriter sheet, WriterDataContext 
     }
 }
 ```
-   
-   
-   
+
+## Read operations
+Steps:
+1. Create a instance of ExcelGenerator. It has methods to generate an instance of IExcelReaderEngine from:
+   - Excel Template file
+   - Byte array that represents a Excel file
+
+2. Use IExcelReaderEngine to execute ReadFile method and get results as instance of IExcelReaderResult<TEntityReaded>. TEntityReaded must be a class with a constructor without parameters.
+   ReadFile has one parameter
+   - IExcelSheetParser<TEntityReaded>[]. Each instance of IExcelSheetParser must contain:
+     - SheetName: the name of the Excel sheet referenced.
+     - Implementation of the Parse method. The operations to be performed on the Excel sheet will be indicated.
+
+3. Implement IExcelSheetParser. Parse method usually follow the following steps:
+   - Initialize cursor in a cell
+   - Perform read operations on the cell: ReadValue, ReadValueAsDateTime, ReadValueAsInteger, etc
+   - User cursor to move to another position: NextColumn or NextRowFromOrigin
+   - Continue with perform operations on cell to load TEntityReaded instance
+   - If a error is found you can register it as CellError (with cell reference), RowError (with row reference) or GlobalError (fatal error)
+
+4. Validate IExcelReaderResult<TEntityReaded>. You can:
+   - Check if has errors: result.Errors
+   - Get TEntityReaded. You probably want to validate the entity data
+
+For more information see the complete example: project ExcelProcessor.Examples.Reader
+
+```C#
+IExcelGenerator excelGenerator = new ExcelGenerator();
+using (IExcelReaderEngine readerEngine = excelGenerator.ReadFromFile("Resources\\ReaderExampleOk.xlsx"))
+{
+    IExcelReaderResult<StudentContext> result = readerEngine.ReadFile(new IExcelSheetParser<StudentContext>[]
+        {
+            new ExcelSheetParserExample()
+        });
+
+    // Do operations with result: validate or process StudentContext instance
+    // Example
+    // No errors expected
+    // Assert.Empty(result.Errors);
+    // Entity must be readed
+    // Assert.NotNull(result.EntityReaded);
+    // Check expected value
+    // Assert.Equal("MIT", result.EntityReaded.University);
+}
+```
+
+Partial content of ExcelSheetParserExample
+```C#
+public void Parse(IExcelSheetReader<StudentContext> sheet)
+{
+    IRowCursor cursor = sheet.InitializeCursor(new CellReference(3, "B"));
+    
+    sheet.Results.EntityReaded.University = sheet.ReadValue();
+    // University (mandatory)
+    if (string.IsNullOrEmpty(sheet.Results.EntityReaded.University))
+        sheet.Results.AddCellError("University is mandatory", cursor.CellRef);
+    cursor.NextRowFromOrigin();
+
+    // GeneratedAt
+    sheet.Results.EntityReaded.GeneratedAt = sheet.ReadValueAsDateTime("Generated at is not a valid date");
+
+    // Read students
+    cursor = sheet.InitializeCursor(new CellReference(8, "A"));
+    bool end = false;
+    while (!end)
+    {
+        try
+        {
+            Student student = new Student();
+            student.Name = sheet.ReadValue();
+            cursor.NextColumn();
+
+            student.LastName = sheet.ReadValue();
+            cursor.NextColumn();
+
+            if (string.IsNullOrEmpty(student.Name) && string.IsNullOrEmpty(student.LastName))
+                end = true;
+            else
+            {
+                if (string.IsNullOrEmpty(student.Name))
+                    sheet.Results.AddRowError("Name is mandatory", cursor.CellRef.Row);
+                if (string.IsNullOrEmpty(student.LastName))
+                    sheet.Results.AddRowError("Last name is mandatory", cursor.CellRef.Row);
+                student.Age = sheet.ReadValueAsInteger("Age is mandatory and must be a number");
+            }
+            sheet.Results.EntityReaded.Students.Add(student);
+            cursor.NextRowFromOrigin(); // Next row
+        }
+        catch (RowNotExistsException)
+        {
+            // End of file
+            end = true;
+        }
+    }
+}
+```
+
    
 
