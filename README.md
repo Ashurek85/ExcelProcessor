@@ -1,39 +1,39 @@
 # ExcelProcessor
 
-Wrapper over OpenXML for easy use. No paid license required. It offers the functionality to read and generate Excel files.
+Wrapper over *OpenXML* for easy use. No paid license required. It offers the functionality to read and generate *Excel* files.
 
 ## Positioning
-Position and movement through Excel is done through two abstractions:
-- ICellReference. It defines a position: row and column
-- IRowCursor. Cursor with the ability to change cell reference position. The first position is marked as origin
-  - NextColumn(): It allows to move to the next column
-  - NextRowFromOrigin(): It allows positioning in the next row and origin column 
+Position and movement through *Excel* is done through two abstractions:
+- *ICellReference*. It defines a position: row and column
+- *IRowCurso*r. Cursor with the ability to change cell reference position. The first position is marked as origin
+  - *NextColumn()*: It allows to move to the next column
+  - *NextRowFromOrigin()*: It allows positioning in the next row and origin column 
 
 ## Write operations
 Steps:
-1. Create a instance of ExcelGenerator. It has methods to generate an instance of IExcelWriterEngine from:
-   - Excel Template file
-   - Byte array that represents a Excel file
+1. Create a instance of *ExcelGenerator*. It has methods to generate an instance of *IExcelWriterEngine* from:
+   - *Excel* Template file
+   - Byte array that represents a *Excel* file
    - Empty file
   
-2. Define Excel styles. You need a class that inherits from ExcelStyles. The objective is the definition of styles (InjectStyle method).
+2. Define *Excel* styles. You need a class that inherits from *ExcelStyles*. The objective is the definition of styles (*InjectStyle* method).
    Methods are available to:
    - Inyect fill, border and fonts
    - Generate solid fill with full border, it can be customized.
 
-3. Use IExcelWriterEngine to perform operations and get Excel file as byte array (Create method) or save it to disk (CreateAndSave method). Two main parameters:
-   - TDataContext. Data context. It will contain the data that you want to write in Excel
-   - IExcelSheetBuilder<TDataContext>[]. Each instance of IExcelSheetBuilder must contain:
-     - SheetName: the name of the Excel sheet referenced.
-     - Implementation of the Build method. The operations to be performed on the Excel sheet will be indicated.
+3. Use *IExcelWriterEngine* to perform operations and get Excel file as byte array (*Create* method) or save it to disk (*CreateAndSave* method). Two main parameters:
+   - *TDataContext*. Data context. It will contain the data that you want to write in *Excel*
+   - *IExcelSheetBuilder<TDataContext>[]*. Each instance of *IExcelSheetBuilder* must contain:
+     - *SheetName*: the name of the *Excel* sheet referenced.
+     - Implementation of the *Build* method. The operations to be performed on the *Excel* sheet will be indicated.
 
-4. Implement IExcelSheetBuilder. Build method usually follows the following steps:
+4. Implement *IExcelSheetBuilder*. Build method usually follows the following steps:
    - Initialize cursor in a cell
    - Perform operations in the cell: InsertValue, InsertFormula, InsertImage, Merge, SetRowHeight, etc
    - User cursor to move to another position: NextColumn or NextRowFromOrigin
    - Continue performing operations in a cell
   
-For further information, see the complete example: project ExcelProcessor.Examples.Writer
+For further information, see the complete example: project *ExcelProcessor.Examples.Writer*
 ```C#
 IExcelGenerator excelGenerator = new ExcelGenerator();
 using (IExcelWriterEngine writerEngine = excelGenerator.FromTemplate<ExampleExcelStyles>("Resources\\WriterTemplateExample.xlsx"))
@@ -50,7 +50,7 @@ using (IExcelWriterEngine writerEngine = excelGenerator.FromTemplate<ExampleExce
   }
 ```
 
-Partial content of ExcelSheetBuilderExample
+Partial content of *ExcelSheetBuilderExample*
 ```C#
 
 public void Build(IExcelSheetWriter sheet, WriterDataContext dataContext)
@@ -121,28 +121,28 @@ The system can be expanded in two ways:
 
 ## Read operations
 Steps:
-1. Create a instance of ExcelGenerator. It has methods to generate an instance of IExcelReaderEngine from:
-   - Excel Template file
-   - Byte array that represents a Excel file
+1. Create a instance of *ExcelGenerator*. It has methods to generate an instance of *IExcelReaderEngine* from:
+   - *Excel* Template file
+   - Byte array that represents a *Excel* file
 
-2. Use IExcelReaderEngine to execute ReadFile method and get results as instance of IExcelReaderResult<TEntityReaded>. TEntityReaded must be a class with a constructor without parameters.
-   ReadFile has one parameter
-   - IExcelSheetParser<TEntityReaded>[]. Each instance of IExcelSheetParser must contain:
-     - SheetName: the name of the Excel sheet referenced.
-     - Implementation of the Parse method. The operations to be performed on the Excel sheet will be indicated.
+2. Use *IExcelReaderEngine* to execute *ReadFile* method and get results as instance of *IExcelReaderResult<TEntityReaded>*. *TEntityReaded* must be a class with a constructor without parameters.
+   *ReadFile* has one parameter
+   - *IExcelSheetParser<TEntityReaded>[]*. Each instance of *IExcelSheetParser* must contain:
+     - *SheetName*: the name of the Excel sheet referenced.
+     - Implementation of the *Parse* method. The operations to be performed on the *Excel* sheet will be indicated.
 
-3. Implement IExcelSheetParser. Parse method usually follows these steps:
+3. Implement *IExcelSheetParser*. Parse method usually follows these steps:
    - Initialize cursor in a cell
-   - Perform reading operations on the cell: ReadValue, ReadValueAsDateTime, ReadValueAsInteger, etc
-   - User cursor to move to another position: NextColumn or NextRowFromOrigin
-   - Continue performing operations on cell to load TEntityReaded instance
-   - If a error is found you can register it as CellError (with cell reference), RowError (with row reference) or GlobalError (fatal error)
+   - Perform reading operations on the cell: *ReadValue*, *ReadValueAsDateTime*, *ReadValueAsInteger*, etc
+   - User cursor to move to another position: *NextColumn* or *NextRowFromOrigin*
+   - Continue performing operations on cell to load *TEntityReaded* instance
+   - If a error is found you can register it as *CellError* (with cell reference), *RowError* (with row reference) or *GlobalError* (fatal error)
 
-4. Validate IExcelReaderResult<TEntityReaded>. You can:
-   - Check if it has errors: result.Errors
-   - Get TEntityReaded. You probably want to validate the entity data
+4. Validate *IExcelReaderResult<TEntityReaded>*. You can:
+   - Check if it has errors: *result.Errors*
+   - Get *TEntityReaded*. You probably want to validate the entity data
 
-For further information, see the complete example: project ExcelProcessor.Examples.Reader
+For further information, see the complete example: project *ExcelProcessor.Examples.Reader*
 
 ```C#
 IExcelGenerator excelGenerator = new ExcelGenerator();
@@ -164,7 +164,7 @@ using (IExcelReaderEngine readerEngine = excelGenerator.ReadFromFile("Resources\
 }
 ```
 
-Partial content of ExcelSheetParserExample
+Partial content of *ExcelSheetParserExample*
 ```C#
 public void Parse(IExcelSheetReader<StudentContext> sheet)
 {
@@ -216,16 +216,16 @@ public void Parse(IExcelSheetReader<StudentContext> sheet)
 ```
 
 ### Read as parallel
-With the IExcelSheetReader<TEntityReaded>.ReadInParallel method you can perform a block reading line by line in parallel. 
+With the *IExcelSheetReader<TEntityReaded>.ReadInParallel* method you can perform a block reading line by line in parallel. 
 It allows a better performance in iterative reading of rows.
 It has 3 parameters:
-- StartsAtRow: Row number where to start reading
-- ColumnCount: Number of columns to read
+- *StartsAtRow*: Row number where to start reading
+- *ColumnCount*: Number of columns to read
 - Func. Output: Entity readed. Inputs:
-    - string[]. Line data readed as raw string. Length will be equal to ColumnCount.
-    - uint. Row index readed
+    - *string[]*. Line data readed as raw string. Length will be equal to *ColumnCount*.
+    - *uint*. Row index readed
 
-Partial content of ExcelSheetParallelParserExample
+Partial content of *ExcelSheetParallelParserExample*
 ```C#
 public void Parse(IExcelSheetReader<StudentContext> sheet)
 {
@@ -263,8 +263,8 @@ public void Parse(IExcelSheetReader<StudentContext> sheet)
 ```
 
 ### Extensibility
-The most obvious line of work to extend reading functionalities focuses on the extension of native .NET data types that can be read, avoiding external conversions from string to the desired type.
-Currently the reading of integers, dates, text strings and flags as Yes/No is allowed. New methods in IExcelSheetReader<TEntityReaded> would allow these actions to be performed
+The most obvious line of work to extend reading functionalities focuses on the extension of native *.NET* data types that can be read, avoiding external conversions from string to the desired type.
+Currently the reading of integers, dates, text strings and flags as Yes/No is allowed. New methods in *IExcelSheetReader<TEntityReaded>* would allow these actions to be performed
 
 
 
