@@ -114,6 +114,11 @@ private void InsertDataContextValues(IExcelSheetWriter sheet, WriterDataContext 
 }
 ```
 
+### Extensibility
+The system can be expanded in two ways:
+- New formulas. It would be necessary to define more classes that inherit from *Formula* and implement the *Build* method with the necessary operations.
+- Other operations at row and/or column level. The extension point is in the *IExcelSheetWriter* interface
+
 ## Read operations
 Steps:
 1. Create a instance of ExcelGenerator. It has methods to generate an instance of IExcelReaderEngine from:
@@ -256,5 +261,10 @@ public void Parse(IExcelSheetReader<StudentContext> sheet)
         })?.ToList();
 }
 ```
-   
+
+### Extensibility
+The most obvious line of work to extend reading functionalities focuses on the extension of native .NET data types that can be read, avoiding external conversions from string to the desired type.
+Currently the reading of integers, dates, text strings and flags as Yes/No is allowed. New methods in IExcelSheetReader<TEntityReaded> would allow these actions to be performed
+
+
 
