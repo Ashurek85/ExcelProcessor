@@ -1,13 +1,13 @@
 # ExcelProcessor
 
-Wrapper over OpenXML for ease of use. No paid license required. Offers the functionality to read and generate Excel files
+Wrapper over OpenXML for easy use. No paid license required. It offers the functionality to read and generate Excel files.
 
 ## Positioning
 Position and movement through Excel is done through two abstractions:
-- ICellReference. Defines a position: row and column
+- ICellReference. It defines a position: row and column
 - IRowCursor. Cursor with the ability to change cell reference position. The first position is marked as origin
-  - NextColumn(): Move to the next column
-  - NextRowFromOrigin(): Allows positioning in the next row and column of origin
+  - NextColumn(): It allows to move to the next column
+  - NextRowFromOrigin(): It allows positioning in the next row and origin column 
 
 ## Write operations
 Steps:
@@ -19,7 +19,7 @@ Steps:
 2. Define Excel styles. You need a class that inherits from ExcelStyles. The objective is the definition of styles (InjectStyle method).
    Methods are available to:
    - Inyect fill, border and fonts
-   - Generate solid fill with full border, can be customized.
+   - Generate solid fill with full border, it can be customized.
 
 3. Use IExcelWriterEngine to perform operations and get Excel file as byte array (Create method) or save it to disk (CreateAndSave method). Two main parameters:
    - TDataContext. Data context. It will contain the data that you want to write in Excel
@@ -27,13 +27,13 @@ Steps:
      - SheetName: the name of the Excel sheet referenced.
      - Implementation of the Build method. The operations to be performed on the Excel sheet will be indicated.
 
-4. Implement IExcelSheetBuilder. Build method usually follow the following steps:
+4. Implement IExcelSheetBuilder. Build method usually follows the following steps:
    - Initialize cursor in a cell
-   - Perform operations on the cell: InsertValue, InsertFormula, InsertImage, Merge, SetRowHeight, etc
+   - Perform operations in the cell: InsertValue, InsertFormula, InsertImage, Merge, SetRowHeight, etc
    - User cursor to move to another position: NextColumn or NextRowFromOrigin
-   - Continue with perform operations on cell
+   - Continue performing operations in a cell
   
-For more information see the complete example: project ExcelProcessor.Examples.Writer
+For further information, see the complete example: project ExcelProcessor.Examples.Writer
 ```C#
 IExcelGenerator excelGenerator = new ExcelGenerator();
 using (IExcelWriterEngine writerEngine = excelGenerator.FromTemplate<ExampleExcelStyles>("Resources\\WriterTemplateExample.xlsx"))
@@ -116,7 +116,7 @@ private void InsertDataContextValues(IExcelSheetWriter sheet, WriterDataContext 
 
 ### Extensibility
 The system can be expanded in two ways:
-- New formulas. It would be necessary to define more classes that inherit from *Formula* and implement the *Build* method with the necessary operations.
+- New formulae. It would be necessary to define more classes that inherit from *Formula* and implement the *Build* method with the necessary operations.
 - Other operations at row and/or column level. The extension point is in the *IExcelSheetWriter* interface
 
 ## Read operations
@@ -131,18 +131,18 @@ Steps:
      - SheetName: the name of the Excel sheet referenced.
      - Implementation of the Parse method. The operations to be performed on the Excel sheet will be indicated.
 
-3. Implement IExcelSheetParser. Parse method usually follow the following steps:
+3. Implement IExcelSheetParser. Parse method usually follows these steps:
    - Initialize cursor in a cell
-   - Perform read operations on the cell: ReadValue, ReadValueAsDateTime, ReadValueAsInteger, etc
+   - Perform reading operations on the cell: ReadValue, ReadValueAsDateTime, ReadValueAsInteger, etc
    - User cursor to move to another position: NextColumn or NextRowFromOrigin
-   - Continue with perform operations on cell to load TEntityReaded instance
+   - Continue performing operations on cell to load TEntityReaded instance
    - If a error is found you can register it as CellError (with cell reference), RowError (with row reference) or GlobalError (fatal error)
 
 4. Validate IExcelReaderResult<TEntityReaded>. You can:
-   - Check if has errors: result.Errors
+   - Check if it has errors: result.Errors
    - Get TEntityReaded. You probably want to validate the entity data
 
-For more information see the complete example: project ExcelProcessor.Examples.Reader
+For further information, see the complete example: project ExcelProcessor.Examples.Reader
 
 ```C#
 IExcelGenerator excelGenerator = new ExcelGenerator();
@@ -217,7 +217,7 @@ public void Parse(IExcelSheetReader<StudentContext> sheet)
 
 ### Read as parallel
 With the IExcelSheetReader<TEntityReaded>.ReadInParallel method you can perform a block reading line by line in parallel. 
-Allows better performance in iterative reading of rows.
+It allows a better performance in iterative reading of rows.
 It has 3 parameters:
 - StartsAtRow: Row number where to start reading
 - ColumnCount: Number of columns to read
